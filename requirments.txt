@@ -1,0 +1,8 @@
+jupyterlab
+pandas
+numpy
+matplotlib
+geopandas
+rasterio
+scikit-learn
+xgboost

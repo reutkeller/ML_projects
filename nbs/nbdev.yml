@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "ML_projects"
+  site-url: "https://reutkeller.github.io/ML_projects"
+  description: "ml projects"
+  repo-branch: main
+  repo-url: "https://github.com/reutkeller/ML_projects"
