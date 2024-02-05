@@ -10,9 +10,16 @@ import numpy as np
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
+from skopt import BayesSearchCV
 from . import const_vals as CONST
-from . import rf_reg as rf_reg
 
+from sklearn.ensemble import RandomForestRegressor
+import xgboost as xgb
+from sklearn.svm import SVR
+from sklearn.linear_model import Ridge
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import AdaBoostRegressor
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -35,14 +42,34 @@ class TrainRegression():
              self.ground_truth_col = ground_truth_col
              self.test_size = test_size
              self.hyper_method = hyper_method
+             self.model_str = requested_model
 
              #load data and get train test data
              self.x_train, self.x_test, self.y_train, self.y_test = self._load_df_split_data()
              
              # create initial model and match the params 
 
-             self.model_str = requested_model
+             self.model , self.params = self._match_models_()
+
+             #hyperparameter tunning
+             self.best_params = self.hyperparameter()
+
+             #train best model 
+
+             self.best_model = self._create_best_model()
+
+             #fit model
+
+             self.best_model.fit(self.x_train, self.y_train)
+
+             
        
+
+       def _match_models_(self):
+            self.model = CONST.algorithm_to_model[self.model_str]
+            self.params = CONST.algorithm_to_params[self.model_str]
+
+            return self.model , self.params
 
        def _load_df_split_data(self):
                
@@ -62,9 +89,67 @@ class TrainRegression():
                return self.x_train, self.x_test, self.y_train, self.y_test
        
 
+       def hyperparameter(self):
+             if self.hyper_method == 'randomized':
+                   rf_random = RandomizedSearchCV(estimator = self.model, 
+                                                  param_distributions = self.hyper_params,
+                                                  n_iter = CONST.N_ITERATIONS_RFR,
+                                                  cv = CONST.CV_RFR, 
+                                                  verbose=CONST.VERBOSE , 
+                                                  random_state=CONST.RANDOM_STATE , 
+                                                  n_jobs = CONST.N_JOBS)
+                   
+                   #fit model 
+                   rf_random.fit(self.x_train, self.y_train)
+
+                  #best params
+                   self.best_params = rf_random.best_params_
 
 
- 
+             elif self.hyper_method == 'bayesian':
+                  rf_bayes = BayesSearchCV(self.model,
+                                           search_spaces=self.hyper_params, 
+                                           n_iter=CONST.N_ITERATIONS_RFR, 
+                                           cv=CONST.CV_RFR)
+                  np.int = int
+      
+                  #fit model 
+                  rf_bayes.fit(self.x_train, self.y_train)
+
+                  self.best_params = rf_bayes.best_params_
+
+                  print(f'best params : {rf_bayes.best_params_}')
+
+
+             return self.best_params
+       
+       def _create_best_model(self):
+             if self.model_str == 'RFR':
+                   self.best_model = RandomForestRegressor(**self.best_params)
+            
+             elif self.model_str == 'XGB':
+                   self.best_model =xgb.XGBRegressor(**self.best_params)
+             
+             elif self.model_str == 'SVR':
+                   self.best_model = SVR(**self.best_params)
+
+             elif self.model_str == 'RIDGE':
+                   self.best_model = Ridge(**self.best_params)
+            
+             elif self.model_str == 'KNEIGHBORS':
+                   self.best_model = KNeighborsRegressor(**self.best_params)
+
+             elif self.model_str == 'GRADIENT_BOOST':
+                   self.best_model = GradientBoostingRegressor(**self.best_params)
+
+             elif self.model_str == 'ADA':
+                   self.best_model = AdaBoostRegressor(**self.best_params)
+
+             return self.best_model
+
+                   
+              
+
 
 
 

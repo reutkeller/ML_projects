@@ -24,35 +24,19 @@ class HyperparameterTunning():
                model ,  # model to be hyperparameter tuned
                train_test_data : list , # list with train/test data , in this order : [x_train,x_test,y_train,y_test]
                hyper_method : str , #hyperparameter tunning method. accepts : 'randomized' 'bayesian' , 'bayesian continous'
-              #  hyper_params : dict = CONST.RANDOM_GRID_RFR , #parameters for hyperparameter tunning
+               hyper_params : dict = CONST.RANDOM_GRID_RFR , #parameters for hyperparameter tunning
 
                ):
         
         self.hyper_method = hyper_method
         self.hyper_params = hyper_params
 
+
         self.x_train = train_test_data[0]
         self.x_test = train_test_data[1]
         self.y_train = train_test_data[2]
         self.y_test = train_test_data[3]
 
-        self.model_str = model
-
-
-  # def match_model(self):
-     
-  #    if self.model_str == 'RFR':
-  #       self.model = 
-        
-        
-  # 'RFR' : RandomForestRegressor() ,
-  # 'XGB' : xgb.XGBRegressor(),
-  # 'SVR' : SVR(),
-  # 'RIDGE' : Ridge(),
-  # 'KNEIGHBORS' : KNeighborsRegressor(),
-  # 'GRADIENT_BOOST' : GradientBoostingRegressor() ,
-  # 'ADA' : AdaBoostRegressor()        
-     
 
 
   def hyperparameter(self):
@@ -89,18 +73,8 @@ class HyperparameterTunning():
 
       print(f'best params : {rf_bayes.best_params_}')
 
-      
-      
-     #train best model
-     self.best_model = RandomForestRegressor(**self.best_params)
 
-     # fit best model
-     self.best_model.fit(self.x_train, self.y_train)
-
-     #predict test data
-     self.y_pred = self.best_model.predict(self.x_test)
-
-     return self.best_model , self.y_pred
+     return self.best_params
 
 
     
