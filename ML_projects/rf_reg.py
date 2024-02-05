@@ -43,21 +43,6 @@ class TrainRFReg():
 
      self.best_params = self.hyperparameter()
 
-  def objective(self):
-    '''
-    Scitkit Learn Optimize requires an objective function to minimize.
-    We use the average of cross-validation mean absolute errors as 
-    the objective function (also called cost function in optimization)
-    '''
-    self.model.set_params(**self.hyper_params)
-
-    return -np.mean(cross_val_score(self.model, self.x_train, 
-                                    self.y_train, 
-                                    cv=CONST.CV_RFR, 
-                                    n_jobs=CONST.N_JOBS,
-                                    scoring="neg_mean_absolute_error"))
-
-
 
   def hyperparameter(self):
      
@@ -90,14 +75,10 @@ class TrainRFReg():
       rf_bayes.fit(self.x_train, self.y_train)
 
       self.best_params = rf_bayes.best_params_
-
-     elif self.hyper_method == 'bayesian continous':
-
-      self.best_params = gp_minimize(self.objective, 
-                           CONST.SPACE_RFR, 
-                           n_calls=CONST.N_CALLS, 
-                           random_state=CONST.RANDOM_STATE)
-
+      
+      print(rf_bayes.best_params_)
+      print(self.best_params)
+      
      return self.best_params
        
        
