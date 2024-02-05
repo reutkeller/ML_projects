@@ -40,6 +40,9 @@ class TrainRFReg():
      #generate random forest regressor 
      self.model = RandomForestRegressor()
 
+
+     self.best_params = self.hyperparameter()
+
   def objective(self):
     '''
     Scitkit Learn Optimize requires an objective function to minimize.
@@ -81,8 +84,8 @@ class TrainRFReg():
                       search_spaces=self.hyper_params, 
                       n_iter=CONST.N_ITERATIONS_RFR, 
                       cv=CONST.CV_RFR)
+      np.int = int
       
-
        #fit model 
       rf_bayes.fit(self.x_train, self.y_train)
 
