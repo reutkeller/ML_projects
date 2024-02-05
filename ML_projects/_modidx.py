@@ -14,4 +14,10 @@ d = { 'settings': { 'branch': 'main',
                                         'ML_projects.regress_ml.TrainRegression._load_df_split_data': ( 'train_ml_regression.html#trainregression._load_df_split_data',
                                                                                                         'ML_projects/regress_ml.py'),
                                         'ML_projects.regress_ml.TrainRegression.train_model': ( 'train_ml_regression.html#trainregression.train_model',
-                                                                                                'ML_projects/regress_ml.py')}}}
+                                                                                                'ML_projects/regress_ml.py')},
+            'ML_projects.rf_reg': { 'ML_projects.rf_reg.TrainRFReg': ( 'algorithms/regressions/random_forest_reg.html#trainrfreg',
+                                                                       'ML_projects/rf_reg.py'),
+                                    'ML_projects.rf_reg.TrainRFReg.__init__': ( 'algorithms/regressions/random_forest_reg.html#trainrfreg.__init__',
+                                                                                'ML_projects/rf_reg.py'),
+                                    'ML_projects.rf_reg.TrainRFReg.hyperparameter': ( 'algorithms/regressions/random_forest_reg.html#trainrfreg.hyperparameter',
+                                                                                      'ML_projects/rf_reg.py')}}}

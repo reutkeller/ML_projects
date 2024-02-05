@@ -9,9 +9,11 @@ import numpy as np
 
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score
 from . import const_vals as CONST
 
 # %% ../nbs/train_ml_regression.ipynb 4
+#TODO - take out the randorm forest and put it as separate function 
 class TrainRegression():
        
        def __init__(self,
@@ -27,6 +29,8 @@ class TrainRegression():
              self.test_size = test_size
              self.x_train, self.x_test, self.y_train, self.y_test =self._load_df_split_data()
              
+
+             self.train_model()
 
        def _load_df_split_data(self):
                
@@ -45,8 +49,8 @@ class TrainRegression():
 
                return self.x_train, self.x_test, self.y_train, self.y_test
        
+
        def train_model(self):
-              
               # create base model
               rf = RandomForestRegressor()
 
@@ -58,6 +62,25 @@ class TrainRegression():
                                                  random_state=CONST.RANDOM_STATE , 
                                                  n_jobs = CONST.N_JOBS)
                       
+              # Fit the random search model
+              rf_random.fit(self.x_train, self.y_train)
+              
+              #train model 
+              self.best_rf_params = rf_random.best_params_
+
+              #fit best model
+              self.rf_model = RandomForestRegressor(**self.best_rf_params)
+
+              self.rf_model.fit(self.x_train,self.y_train)
+              #predict
+
+              y_pred = self.rf_model.predict(self.x_test)
+
+              self.r2 = r2_score(y_pred, self.y_test)
+
+
+
+              return self.rf_model
 
 
 
