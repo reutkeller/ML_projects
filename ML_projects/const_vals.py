@@ -4,7 +4,7 @@
 __all__ = ['RANDOM_STATE', 'N_JOBS', 'VERBOSE', 'N_ITERATIONS_RFR', 'CV_RFR', 'N_CALLS', 'RANDOM_GRID_RFR', 'RANDOM_GRID_XGB',
            'RANDOM_GRID_SVR', 'RANDOM_RIDGE_REGRESSION', 'RANDOM_KNEIGHBORSR_REGRESSION',
            'RANDOM_GRADIENT_BOOST_REGRESSION', 'RANDOM_ADA_BOOST_REGRESSION', 'algorithm_to_params',
-           'algorithm_to_modle']
+           'algorithm_to_model']
 
 # %% ../nbs/CONSTANTS.ipynb 3
 import numpy as np
@@ -106,7 +106,7 @@ algorithm_to_params = {
   }
 
 
-algorithm_to_modle ={
+algorithm_to_model ={
   'RFR' : RandomForestRegressor() ,
   'XGB' : xgb.XGBRegressor(),
   'SVR' : SVR(),

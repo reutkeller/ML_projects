@@ -41,17 +41,9 @@ class TrainRegression():
              
              # create initial model and match the params 
 
-             
+             self.model_str = requested_model
+       
 
-       #       self.hyper_params = hyper_params
-       #       self.space = space
-
-       #       self.the_best_model = rf_reg.TrainRFReg(train_test_data = [self.x_train, self.x_test, self.y_train, self.y_test],
-       #                         hyper_method = self.hyper_method,
-       #                         hyper_params = self.hyper_params,
-       #                         space = self.space
-       #                         )
-             
        def _load_df_split_data(self):
                
                self.df = pd.read_csv(self.df_path)
