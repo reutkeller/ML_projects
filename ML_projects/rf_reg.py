@@ -7,6 +7,10 @@ __all__ = ['TrainRFReg']
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import RandomizedSearchCV
 from skopt import BayesSearchCV
+from skopt.space import Real, Integer
+from skopt.utils import use_named_args
+from sklearn.model_selection import cross_val_score
+
 from sklearn.metrics import r2_score
 
 from . import const_vals as CONST
@@ -15,11 +19,18 @@ from . import const_vals as CONST
 # %% ../nbs/algorithms/regressions/random_forest_reg.ipynb 4
 class TrainRFReg():
   def __init__(self,
+      train_test_data : list , # list with train/test data , in this order : [x_train,x_test,y_train,y_test]
       hyper_method : str , #hyperparameter tunning method. accepts : 'randomized' 'bayesian' 
-      hyper_params : dict = CONST.random_grid_rf , #parameters for hyperparameter tunning
+      hyper_params : dict = CONST.RANDOM_GRID_RFR , #parameters for hyperparameter tunning
+
       ):
      self.hyper_method = hyper_method
      self.hyper_params = hyper_params
+
+     self.x_train = train_test_data[0]
+     self.x_test = train_test_data[1]
+     self.y_train = train_test_data[2]
+     self.y_test = train_test_data[3]
 
      #generate random forest regressor 
      self.model = RandomForestRegressor()
@@ -29,12 +40,37 @@ class TrainRFReg():
      if self.hyper_method == 'randomized':
        
        rf_random = RandomizedSearchCV(estimator = self.model, 
-                                      param_distributions = CONST.random_grid_rf,
-                                      n_iter = CONST.n_iteration_rf,
-                                      cv = CONST.cv_rf, 
+                                      param_distributions = self.hyper_params,
+                                      n_iter = CONST.N_ITERATIONS_RFR,
+                                      cv = CONST.CV_RFR, 
                                       verbose=CONST.VERBOSE , 
                                       random_state=CONST.RANDOM_STATE , 
                                       n_jobs = CONST.N_JOBS)
+       
+       #fit model 
+       rf_random.fit(self.x_train, self.y_train)
+
+       #best params
+       self.best_params = rf_random.best_params_
+
+
+     elif self.hyper_method == 'bayesian':
+      
+      rf_bayes = BayesSearchCV(self.model,
+                      search_spaces=self.hyper_params, 
+                      n_iter=CONST.N_ITERATIONS_RFR, 
+                      cv=CONST.CV_RFR)
+      
+
+       #fit model 
+      rf_bayes.fit(self.x_train, self.y_train)
+
+
+      return self.best_params
+       
+       
+       
+       
         
      
      
