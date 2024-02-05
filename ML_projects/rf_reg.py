@@ -4,9 +4,11 @@
 __all__ = ['TrainRFReg']
 
 # %% ../nbs/algorithms/regressions/random_forest_reg.ipynb 3
+import numpy as np
+import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import RandomizedSearchCV
-from skopt import BayesSearchCV
+from skopt import BayesSearchCV,gp_minimize
 from skopt.space import Real, Integer
 from skopt.utils import use_named_args
 from sklearn.model_selection import cross_val_score
@@ -20,9 +22,9 @@ from . import const_vals as CONST
 class TrainRFReg():
   def __init__(self,
       train_test_data : list , # list with train/test data , in this order : [x_train,x_test,y_train,y_test]
-      hyper_method : str , #hyperparameter tunning method. accepts : 'randomized' 'bayesian' 
+      hyper_method : str , #hyperparameter tunning method. accepts : 'randomized' 'bayesian' , 'bayesian continous'
       hyper_params : dict = CONST.RANDOM_GRID_RFR , #parameters for hyperparameter tunning
-
+      space : list = CONST.SPACE_RFR , #space for continues bayesian continous search 
       ):
      self.hyper_method = hyper_method
      self.hyper_params = hyper_params
@@ -31,9 +33,28 @@ class TrainRFReg():
      self.x_test = train_test_data[1]
      self.y_train = train_test_data[2]
      self.y_test = train_test_data[3]
+     
+     # space for bayesian continous searching
+     self.space = space
 
      #generate random forest regressor 
      self.model = RandomForestRegressor()
+
+  def objective(self):
+    '''
+    Scitkit Learn Optimize requires an objective function to minimize.
+    We use the average of cross-validation mean absolute errors as 
+    the objective function (also called cost function in optimization)
+    '''
+    self.model.set_params(**self.hyper_params)
+
+    return -np.mean(cross_val_score(self.model, self.x_train, 
+                                    self.y_train, 
+                                    cv=CONST.CV_RFR, 
+                                    n_jobs=CONST.N_JOBS,
+                                    scoring="neg_mean_absolute_error"))
+
+
 
   def hyperparameter(self):
      
@@ -65,23 +86,14 @@ class TrainRFReg():
        #fit model 
       rf_bayes.fit(self.x_train, self.y_train)
 
+     elif self.hyper_method == 'bayesian continous':
+      
+
+      
+
+
 
       return self.best_params
        
        
-       
-       
-        
-     
-     
 
-
-
-
-
-
-
-    
-    
-    
-    

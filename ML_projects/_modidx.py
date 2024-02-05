@@ -20,4 +20,6 @@ d = { 'settings': { 'branch': 'main',
                                     'ML_projects.rf_reg.TrainRFReg.__init__': ( 'algorithms/regressions/random_forest_reg.html#trainrfreg.__init__',
                                                                                 'ML_projects/rf_reg.py'),
                                     'ML_projects.rf_reg.TrainRFReg.hyperparameter': ( 'algorithms/regressions/random_forest_reg.html#trainrfreg.hyperparameter',
-                                                                                      'ML_projects/rf_reg.py')}}}
+                                                                                      'ML_projects/rf_reg.py'),
+                                    'ML_projects.rf_reg.TrainRFReg.objective': ( 'algorithms/regressions/random_forest_reg.html#trainrfreg.objective',
+                                                                                 'ML_projects/rf_reg.py')}}}
