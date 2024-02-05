@@ -24,7 +24,7 @@ class HyperparameterTunning():
                model ,  # model to be hyperparameter tuned
                train_test_data : list , # list with train/test data , in this order : [x_train,x_test,y_train,y_test]
                hyper_method : str , #hyperparameter tunning method. accepts : 'randomized' 'bayesian' , 'bayesian continous'
-               hyper_params : dict = CONST.RANDOM_GRID_RFR , #parameters for hyperparameter tunning
+              #  hyper_params : dict = CONST.RANDOM_GRID_RFR , #parameters for hyperparameter tunning
 
                ):
         
@@ -36,8 +36,71 @@ class HyperparameterTunning():
         self.y_train = train_test_data[2]
         self.y_test = train_test_data[3]
 
+        self.model_str = model
 
+
+  # def match_model(self):
+     
+  #    if self.model_str == 'RFR':
+  #       self.model = 
         
+        
+  # 'RFR' : RandomForestRegressor() ,
+  # 'XGB' : xgb.XGBRegressor(),
+  # 'SVR' : SVR(),
+  # 'RIDGE' : Ridge(),
+  # 'KNEIGHBORS' : KNeighborsRegressor(),
+  # 'GRADIENT_BOOST' : GradientBoostingRegressor() ,
+  # 'ADA' : AdaBoostRegressor()        
+     
+
+
+  def hyperparameter(self):
+     
+     if self.hyper_method == 'randomized':
+       
+       rf_random = RandomizedSearchCV(estimator = self.model, 
+                                      param_distributions = self.hyper_params,
+                                      n_iter = CONST.N_ITERATIONS_RFR,
+                                      cv = CONST.CV_RFR, 
+                                      verbose=CONST.VERBOSE , 
+                                      random_state=CONST.RANDOM_STATE , 
+                                      n_jobs = CONST.N_JOBS)
+       
+       #fit model 
+       rf_random.fit(self.x_train, self.y_train)
+
+       #best params
+       self.best_params = rf_random.best_params_
+
+
+     elif self.hyper_method == 'bayesian':
+      
+      rf_bayes = BayesSearchCV(self.model,
+                      search_spaces=self.hyper_params, 
+                      n_iter=CONST.N_ITERATIONS_RFR, 
+                      cv=CONST.CV_RFR)
+      np.int = int
+      
+       #fit model 
+      rf_bayes.fit(self.x_train, self.y_train)
+
+      self.best_params = rf_bayes.best_params_
+
+      print(f'best params : {rf_bayes.best_params_}')
+
+      
+      
+     #train best model
+     self.best_model = RandomForestRegressor(**self.best_params)
+
+     # fit best model
+     self.best_model.fit(self.x_train, self.y_train)
+
+     #predict test data
+     self.y_pred = self.best_model.predict(self.x_test)
+
+     return self.best_model , self.y_pred
 
 
     
