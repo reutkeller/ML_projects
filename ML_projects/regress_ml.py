@@ -39,15 +39,13 @@ class TrainRegression():
              self.space = space
 
              #load data and get train test data
-             self.x_train, self.x_test, self.y_train, self.y_test =self._load_df_split_data()
+             self.x_train, self.x_test, self.y_train, self.y_test = self._load_df_split_data()
              
              self.the_best_model = rf_reg.TrainRFReg(train_test_data = [self.x_train, self.x_test, self.y_train, self.y_test],
                                hyper_method = self.hyper_method,
                                hyper_params = self.hyper_params,
                                space = self.space
                                )
-
-
 
 
        def _load_df_split_data(self):
@@ -69,37 +67,8 @@ class TrainRegression():
        
 
 
-       # def train_model(self):
-       #        # create base model
-       #        rf = RandomForestRegressor()
 
-       #        rf_random = RandomizedSearchCV(estimator = rf, 
-       #                                       param_distributions = CONST.random_grid_rf,
-       #                                         n_iter = CONST.n_iteration_rf,
-                                                 # cv = CONST.cv_rf, 
-                                                 # verbose=CONST.VERBOSE , 
-                                                 # random_state=CONST.RANDOM_STATE , 
-                                                 # n_jobs = CONST.N_JOBS)
-                      
-              # # Fit the random search model
-              # rf_random.fit(self.x_train, self.y_train)
-              
-              # #train model 
-              # self.best_rf_params = rf_random.best_params_
-
-              # #fit best model
-              # self.rf_model = RandomForestRegressor(**self.best_rf_params)
-
-              # self.rf_model.fit(self.x_train,self.y_train)
-              # #predict
-
-              # y_pred = self.rf_model.predict(self.x_test)
-
-              # self.r2 = r2_score(y_pred, self.y_test)
-
-
-
-              # return self.rf_model
+ 
 
 
 
