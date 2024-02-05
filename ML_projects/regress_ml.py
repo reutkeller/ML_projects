@@ -13,6 +13,10 @@ from sklearn.metrics import r2_score
 from . import const_vals as CONST
 from . import rf_reg as rf_reg
 
+
+import warnings
+warnings.filterwarnings('ignore')
+
 # %% ../nbs/train_ml_regression.ipynb 4
 #TODO - take out the randorm forest and put it as separate function 
 class TrainRegression():
@@ -37,7 +41,7 @@ class TrainRegression():
              #load data and get train test data
              self.x_train, self.x_test, self.y_train, self.y_test =self._load_df_split_data()
              
-             self.the_best_params = rf_reg.TrainRFReg(train_test_data = [self.x_train, self.x_test, self.y_train, self.y_test],
+             self.the_best_model = rf_reg.TrainRFReg(train_test_data = [self.x_train, self.x_test, self.y_train, self.y_test],
                                hyper_method = self.hyper_method,
                                hyper_params = self.hyper_params,
                                space = self.space

@@ -16,5 +16,7 @@ d = { 'settings': { 'branch': 'main',
             'ML_projects.rf_reg': { 'ML_projects.rf_reg.TrainRFReg': ('random_forest_reg.html#trainrfreg', 'ML_projects/rf_reg.py'),
                                     'ML_projects.rf_reg.TrainRFReg.__init__': ( 'random_forest_reg.html#trainrfreg.__init__',
                                                                                 'ML_projects/rf_reg.py'),
+                                    'ML_projects.rf_reg.TrainRFReg.evaluate_model': ( 'random_forest_reg.html#trainrfreg.evaluate_model',
+                                                                                      'ML_projects/rf_reg.py'),
                                     'ML_projects.rf_reg.TrainRFReg.hyperparameter': ( 'random_forest_reg.html#trainrfreg.hyperparameter',
                                                                                       'ML_projects/rf_reg.py')}}}

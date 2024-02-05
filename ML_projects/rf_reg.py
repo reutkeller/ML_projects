@@ -12,8 +12,8 @@ from skopt import BayesSearchCV,gp_minimize
 from skopt.space import Real, Integer
 from skopt.utils import use_named_args
 from sklearn.model_selection import cross_val_score
-
-from sklearn.metrics import r2_score
+import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score,mean_absolute_error, mean_squared_error
 
 from . import const_vals as CONST
 
@@ -40,9 +40,10 @@ class TrainRFReg():
      #generate random forest regressor 
      self.model = RandomForestRegressor()
 
+     # train best model and get y_pred
+     self.best_model , self.y_pred = self.hyperparameter()
 
-     self.best_params = self.hyperparameter()
-
+     self.evaluate_model()
 
   def hyperparameter(self):
      
@@ -75,11 +76,40 @@ class TrainRFReg():
       rf_bayes.fit(self.x_train, self.y_train)
 
       self.best_params = rf_bayes.best_params_
-      
-      print(rf_bayes.best_params_)
-      print(self.best_params)
-      
-     return self.best_params
-       
-       
 
+      print(f'best params : {rf_bayes.best_params_}')
+
+      
+      
+     #train best model
+     self.best_model = RandomForestRegressor(**self.best_params)
+
+     # fit best model
+     self.best_model.fit(self.x_train, self.y_train)
+
+     #predict test data
+     self.y_pred = self.best_model.predict(self.x_test)
+
+     return self.best_model , self.y_pred
+  
+
+  def evaluate_model(self):
+
+    # Calculate evaluation metrics
+    mae = mean_absolute_error(self.y_test, self.y_pred)
+    mse = mean_squared_error(self.y_test, self.y_pred)
+    rmse = np.sqrt(mse)
+
+    
+    # Mean Absolute Percentage Error (MAPE)
+    mape = np.mean(np.abs((self.y_test - self.y_pred) / self.y_test)) * 100
+    print(f'MAE : {mae} , MSE: {mse} , RMSE : {rmse} MAPE : {mape} ')
+
+    # Plot y_true vs y_test
+    plt.scatter(self.y_test, self.y_pred)
+    plt.xlabel('True Values')
+    plt.ylabel('Predictions')
+    plt.title('True Values vs Predictions')
+    plt.show()
+
+  
