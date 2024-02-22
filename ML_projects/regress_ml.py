@@ -7,19 +7,15 @@ __all__ = ['TrainRegression']
 import pandas as pd
 import numpy as np
 
-from sklearn.model_selection import train_test_split, RandomizedSearchCV
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import r2_score
+from sklearn.model_selection import train_test_split #, RandomizedSearchCVcore
 from skopt import BayesSearchCV
 from . import const_vals as CONST
 
-from sklearn.ensemble import RandomForestRegressor
 import xgboost as xgb
 from sklearn.svm import SVR
 from sklearn.linear_model import Ridge
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import AdaBoostRegressor
+from sklearn.neighbors import RandomForestRegressor,KNeighborsRegressor , AdaBoostRegressor ,GradientBoostingRegressor
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -34,8 +30,6 @@ class TrainRegression():
                test_size : float , #size of data to be used for test 
                hyper_method : str , #hyperparameter tunning method. accepts : 'randomized' 'bayesian' , 'bayesian continous'
                columns_to_remove : list[str]=None , #columns not to use for trainning the model. These columns will be removed.
-              #  hyper_params : dict = CONST.RANDOM_GRID_RFR, #parameters for hyperparameter tunning
-              #  space : list = CONST.SPACE_RFR  , #
                ):
              self.df_path = df_path
              self.columns_to_remove = columns_to_remove
@@ -62,7 +56,7 @@ class TrainRegression():
 
              self.best_model.fit(self.x_train, self.y_train)
 
-             
+
        
 
        def _match_models_(self):
@@ -92,7 +86,7 @@ class TrainRegression():
        def hyperparameter(self):
              if self.hyper_method == 'randomized':
                    rf_random = RandomizedSearchCV(estimator = self.model, 
-                                                  param_distributions = self.hyper_params,
+                                                  param_distributions = self.params,
                                                   n_iter = CONST.N_ITERATIONS_RFR,
                                                   cv = CONST.CV_RFR, 
                                                   verbose=CONST.VERBOSE , 
@@ -108,7 +102,7 @@ class TrainRegression():
 
              elif self.hyper_method == 'bayesian':
                   rf_bayes = BayesSearchCV(self.model,
-                                           search_spaces=self.hyper_params, 
+                                           search_spaces=self.params, 
                                            n_iter=CONST.N_ITERATIONS_RFR, 
                                            cv=CONST.CV_RFR)
                   np.int = int
@@ -146,8 +140,46 @@ class TrainRegression():
                    self.best_model = AdaBoostRegressor(**self.best_params)
 
              return self.best_model
+       
+       def evaluate_model(self):
+             
+            # Make predictions
+            y_pred = model.predict(X_test)
 
-                   
+            # Calculate R2 score
+            r2 = r2_score(y_test, y_pred)
+
+            # Calculate MAE
+            mae = mean_absolute_error(y_test, y_pred)
+
+            # Calculate MSE
+            mse = mean_squared_error(y_test, y_pred)
+
+            # Calculate RMSE
+            rmse = np.sqrt(mse)
+
+            # Calculate MAPE
+            mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100
+
+            # Plotting predictions vs. ground truth
+            plt.figure(figsize=(8, 6))
+            plt.scatter(y_test, y_pred, color='blue', alpha=0.5)
+            plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2)
+            plt.xlabel('Actual')
+            plt.ylabel('Predicted')
+            plt.title('Actual vs. Predicted')
+            plt.grid(True)
+            plt.show()
+
+            # Print evaluation metrics
+            print("R2 Score:", r2)
+            print("Mean Absolute Error:", mae)
+            print("Mean Squared Error:", mse)
+            print("Root Mean Squared Error:", rmse)
+            print("Mean Absolute Percentage Error:", mape)
+
+
+                  
               
 
 
