@@ -6,3 +6,4 @@ geopandas
 rasterio
 scikit-learn
 xgboost
+scikit-optimize
