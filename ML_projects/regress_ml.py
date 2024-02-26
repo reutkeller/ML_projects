@@ -42,6 +42,7 @@ class TrainRegression():
              self.test_size = test_size
              self.hyper_method = hyper_method
              self.model_str = requested_model
+             self.model_name = requested_model
 
              #load data and get train test data
              self.x_train, self.x_test, self.y_train, self.y_test = self._load_df_split_data()
@@ -173,7 +174,21 @@ class TrainRegression():
             plt.plot([self.y_test.min(), self.y_test.max()], [self.y_test.min(), self.y_test.max()], 'k--', lw=2)
             plt.xlabel('Actual')
             plt.ylabel('Predicted')
-            plt.title('Actual vs. Predicted')
+            plt.title(f'Actual vs. Predicted - {self.model_name}')
+            plt.grid(True)
+            plt.show()
+
+
+            # Create scatter plot
+            plt.scatter(self.y_test, y_pred, color='blue', label='True vs Predicted')
+
+            # Add labels and title
+            plt.xlabel('True Values')
+            plt.ylabel('Predicted Values')
+            plt.title(f'True vs Predicted Values Scatter Plot - {self.model_name}')
+            plt.legend()
+
+            # Show plot
             plt.grid(True)
             plt.show()
 
@@ -184,6 +199,17 @@ class TrainRegression():
             print("Root Mean Squared Error:", rmse)
             print("Mean Absolute Percentage Error:", mape)
 
+            #feature importance
+            importance_scores = self.best_model.feature_importances_
+            feature_names = self.x_test.columns.tolist()
+
+                  # Plot feature importance
+            plt.figure(figsize=(10, 6))
+            plt.barh(feature_names, importance_scores)
+            plt.xlabel(f'Feature Importance Score - {self.model_name} ')
+            plt.ylabel('Features')
+            plt.title('Feature Importance')
+            plt.show()
 
                   
             

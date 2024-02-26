@@ -4,7 +4,8 @@
 __all__ = ['RANDOM_STATE', 'N_JOBS', 'VERBOSE', 'N_ITERATIONS_RFR', 'CV_RFR', 'N_CALLS', 'RANDOM_GRID_RFR', 'RANDOM_GRID_XGB',
            'RANDOM_GRID_SVR', 'RANDOM_RIDGE_REGRESSION', 'RANDOM_KNEIGHBORSR_REGRESSION',
            'RANDOM_GRADIENT_BOOST_REGRESSION', 'RANDOM_ADA_BOOST_REGRESSION', 'algorithm_to_params',
-           'algorithm_to_model']
+           'algorithm_to_model', 'ERROR_READ_DF', 'BINS_HIST', 'COLOSR_HIST', 'ALPHA_HIST', 'TITLE_HIST',
+           'X_LABEL_HIST', 'Y_LABEL_HIST', 'TO_GRID']
 
 # %% ../nbs/CONSTANTS.ipynb 3
 import numpy as np
@@ -115,3 +116,17 @@ algorithm_to_model ={
   'GRADIENT_BOOST' : GradientBoostingRegressor() ,
   'ADA' : AdaBoostRegressor()
 }
+
+# %% ../nbs/CONSTANTS.ipynb 9
+#read dataframe
+ERROR_READ_DF = 'Failes reading the dataframe, error :'
+
+#histogram
+BINS_HIST = 30
+COLOSR_HIST = 'skyblue'
+ALPHA_HIST = 0.7
+TITLE_HIST = "Histogram - "
+X_LABEL_HIST = 'Value'
+Y_LABEL_HIST = 'Frequency'
+TO_GRID = True
+
