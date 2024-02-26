@@ -8,15 +8,20 @@ import pandas as pd
 import numpy as np
 
 from sklearn.model_selection import train_test_split #, RandomizedSearchCVcore
+from sklearn.model_selection import RandomizedSearchCV
 from skopt import BayesSearchCV
 from . import const_vals as CONST
-
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.ensemble import AdaBoostRegressor
 import xgboost as xgb
 from sklearn.svm import SVR
 from sklearn.linear_model import Ridge
-from sklearn.neighbors import RandomForestRegressor,KNeighborsRegressor , AdaBoostRegressor ,GradientBoostingRegressor
-from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 
+from sklearn.datasets import make_regression
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -56,7 +61,8 @@ class TrainRegression():
 
              self.best_model.fit(self.x_train, self.y_train)
 
-
+             # Model evaluation
+             self.evaluate_model()
        
 
        def _match_models_(self):
@@ -144,27 +150,27 @@ class TrainRegression():
        def evaluate_model(self):
              
             # Make predictions
-            y_pred = model.predict(X_test)
+            y_pred = self.best_model.predict(self.x_test)
 
             # Calculate R2 score
-            r2 = r2_score(y_test, y_pred)
+            r2 = r2_score(self.y_test, y_pred)
 
             # Calculate MAE
-            mae = mean_absolute_error(y_test, y_pred)
+            mae = mean_absolute_error(self.y_test, y_pred)
 
             # Calculate MSE
-            mse = mean_squared_error(y_test, y_pred)
+            mse = mean_squared_error(self.y_test, y_pred)
 
             # Calculate RMSE
             rmse = np.sqrt(mse)
 
             # Calculate MAPE
-            mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100
+            mape = np.mean(np.abs((self.y_test - y_pred) / self.y_test)) * 100
 
             # Plotting predictions vs. ground truth
             plt.figure(figsize=(8, 6))
-            plt.scatter(y_test, y_pred, color='blue', alpha=0.5)
-            plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2)
+            plt.scatter(self.y_test, y_pred, color='blue', alpha=0.5)
+            plt.plot([self.y_test.min(), self.y_test.max()], [self.y_test.min(), self.y_test.max()], 'k--', lw=2)
             plt.xlabel('Actual')
             plt.ylabel('Predicted')
             plt.title('Actual vs. Predicted')
@@ -180,8 +186,5 @@ class TrainRegression():
 
 
                   
-              
-
-
-
+            
 
