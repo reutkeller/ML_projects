@@ -32,6 +32,12 @@ class DataExploration():
       error_str = CONST.ERROR_READ_DF + str(e)
       print(error_str)
 
+    
+    for col in self.cols_for_analysis:
+
+      self._generate_histogram_(col_name = col)
+
+
 
   def _generate_histogram_(self,
                            col_name : str , # column name to be useed for analysis
@@ -48,6 +54,7 @@ class DataExploration():
     plt.xlabel(CONST.X_LABEL_HIST)
     plt.ylabel(CONST.Y_LABEL_HIST)
     plt.grid(CONST.TO_GRID)
+    plt.show()
 
 
 
