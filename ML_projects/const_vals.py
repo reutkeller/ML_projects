@@ -5,7 +5,7 @@ __all__ = ['RANDOM_STATE', 'N_JOBS', 'VERBOSE', 'N_ITERATIONS_RFR', 'CV_RFR', 'N
            'RANDOM_GRID_SVR', 'RANDOM_RIDGE_REGRESSION', 'RANDOM_KNEIGHBORSR_REGRESSION',
            'RANDOM_GRADIENT_BOOST_REGRESSION', 'RANDOM_ADA_BOOST_REGRESSION', 'algorithm_to_params',
            'algorithm_to_model', 'ERROR_READ_DF', 'BINS_HIST', 'COLOSR_HIST', 'ALPHA_HIST', 'TITLE_HIST',
-           'X_LABEL_HIST', 'Y_LABEL_HIST', 'TO_GRID']
+           'Y_LABEL_HIST', 'TO_GRID']
 
 # %% ../nbs/CONSTANTS.ipynb 3
 import numpy as np
@@ -33,11 +33,11 @@ N_CALLS = 20
 
 # %% ../nbs/CONSTANTS.ipynb 6
 RANDOM_GRID_RFR={'bootstrap': [True, False],
-                'max_depth': [3,10, 25, 45, 70],
-                'max_features': ['sqrt', 'log2'],
+                'max_depth': [17,20, 25, 30],
+                'max_features': ['sqrt'],#, 'log2'],
                 'min_samples_leaf': [1, 2, 4],
-                'min_samples_split': [2, 5, 10],
-                'n_estimators': [200, 400, 600, 800]}
+                'min_samples_split': [2, 3 ],
+                'n_estimators': [500, 550, 600, 650]}
 
 # SPACE_RFR = {'bootstrap' : Categorical([True, False]),
 #              'max_depth' : Integer(1,100),
@@ -126,7 +126,7 @@ BINS_HIST = 30
 COLOSR_HIST = 'skyblue'
 ALPHA_HIST = 0.7
 TITLE_HIST = "Histogram - "
-X_LABEL_HIST = 'Value'
+# X_LABEL_HIST = 'Value'
 Y_LABEL_HIST = 'Frequency'
 TO_GRID = True
 
