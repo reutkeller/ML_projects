@@ -37,7 +37,8 @@ RANDOM_GRID_RFR={'bootstrap': [True, False],
                 'max_features': ['sqrt'],#, 'log2'],
                 'min_samples_leaf': [1, 2, 4],
                 'min_samples_split': [2, 3 ],
-                'n_estimators': [500, 550, 600, 650]}
+                'n_estimators': [500, 550, 600, 650],
+                'random_state': [42]}
 
 # SPACE_RFR = {'bootstrap' : Categorical([True, False]),
 #              'max_depth' : Integer(1,100),
@@ -53,7 +54,8 @@ RANDOM_GRID_XGB = {
     "learning_rate":[0.01, 0.1, 0.5, 1],
     "gamma":[0.01, 0.1, 1, 5],
     "colsample_bytree":[0.5, 0.7, 0.9, 1],
-    "alpha":[0, 0.1, 0.5]
+    "alpha":[0, 0.1, 0.5],
+    "random_state": [42]
 }
 
 
@@ -61,12 +63,14 @@ RANDOM_GRID_SVR = {
     "kernel" : ["linear","sigmoid","poly"],
     "degree" : [2,3,5,7],
     "gamma" : ["scale","auto"],
-    "epsilon" : [0.1 , 0.5 , 0.9]
+    "epsilon" : [0.1 , 0.5 , 0.9],
+    "random_state": [42]
     }
 
 RANDOM_RIDGE_REGRESSION = {
   "alpha" : [1,3,5],
-  "solver" : ["auto","svd","cholesky","sag"]
+  "solver" : ["auto","svd","cholesky","sag"],
+  "random_state": [42]
   }
 
 RANDOM_KNEIGHBORSR_REGRESSION = {
@@ -82,12 +86,14 @@ RANDOM_GRADIENT_BOOST_REGRESSION = {
   'min_samples_split': [2, 5, 10],
   'max_depth': [3,10, 25, 45, 70],
   'max_features': ['sqrt', 'log2'],
+  "random_state": [42]
   }
 
 RANDOM_ADA_BOOST_REGRESSION={
   "n_estimators": [200, 400, 600, 800],
   "learning_rate":[0.01, 0.1, 0.5, 1],
-  "loss" : ["linear", "square", "exponential"]
+  "loss" : ["linear", "square", "exponential"],
+  "random_state": [42]
   }
 
 

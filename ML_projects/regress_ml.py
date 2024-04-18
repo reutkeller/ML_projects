@@ -22,6 +22,7 @@ from sklearn.datasets import make_regression
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpl_patches
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -176,21 +177,23 @@ class TrainRegression():
             plt.ylabel('Predicted')
             plt.title(f'Actual vs. Predicted - {self.model_name}')
             plt.grid(True)
+
+
+                        # create a list with two empty handles (or more if needed)
+            handles = [mpl_patches.Rectangle((0, 0), 1, 1, fc="white", ec="white", 
+                                          lw=0, alpha=0)] * 2
+
+            # create the corresponding number of labels (= the text you want to display)
+            labels = []
+            labels.append("R2 = {0:.4g}".format(r2))
+            labels.append("MAE = {0:.4g}".format(mae))
+            labels.append("MAE = {0:.4g}".format(rmse))
+
+            plt.legend(handles, labels, loc='best', fontsize='small', 
+                       fancybox=True, framealpha=0.7, 
+                       handlelength=0, handletextpad=0)
             plt.show()
 
-
-            # Create scatter plot
-            plt.scatter(self.y_test, y_pred, color='blue', label='True vs Predicted')
-
-            # Add labels and title
-            plt.xlabel('True Values')
-            plt.ylabel('Predicted Values')
-            plt.title(f'True vs Predicted Values Scatter Plot - {self.model_name}')
-            plt.legend()
-
-            # Show plot
-            plt.grid(True)
-            plt.show()
 
             # Print evaluation metrics
             print("R2 Score:", r2)
